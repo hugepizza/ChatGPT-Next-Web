@@ -8,11 +8,12 @@ import Locale from "../locales";
 
 import BotIcon from "../icons/bot.svg";
 import { getHeaders } from "../client/api";
+import { useState } from "react";
 
 export function AuthPage() {
   const navigate = useNavigate();
   const access = useAccessStore();
-
+  const [errmsg, setErrmsg] = useState("");
   const goHome = () => {
     console.log("go home");
 
@@ -24,10 +25,15 @@ export function AuthPage() {
         return resp.json();
       })
       .then((j) => {
-        access.updateExpiredAt(j.expiredAt.toString());
-        navigate(Path.Home); // Move this line here
+        if (Date.now() / 1000 > j.expiredAt) {
+          setErrmsg("订阅已过期");
+        } else {
+          access.updateExpiredAt(j.expiredAt.toString());
+          navigate(Path.Home); // Move this line here
+        }
       })
       .catch((err) => {
+        setErrmsg("请联系客服");
         console.log(err);
       })
       .finally(() => {});
@@ -41,6 +47,7 @@ export function AuthPage() {
 
       <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
       <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
+      {errmsg && <div style={{ color: "red" }}>{errmsg.toString()}</div>}
 
       {/* <input
         className={styles["auth-username"]}
