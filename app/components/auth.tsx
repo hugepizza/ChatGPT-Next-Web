@@ -23,6 +23,15 @@ export function AuthPage() {
       <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
       <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
 
+      {/* <input
+        className={styles["auth-username"]}
+        type="text"
+        placeholder={Locale.Auth.UserName}
+        value={access.userName}
+        onChange={(e) => {
+          access.updateUserName(e.currentTarget.value);
+        }}
+      /> */}
       <input
         className={styles["auth-input"]}
         type="password"
@@ -39,7 +48,6 @@ export function AuthPage() {
           type="primary"
           onClick={goHome}
         />
-        <IconButton text={Locale.Auth.Later} onClick={goHome} />
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { getServerSideConfig } from "../config/server";
 import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX } from "../constant";
+import { Auth } from "./my_auth";
+import { setBASE_URL } from "./common";
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
@@ -24,7 +26,7 @@ function parseApiKey(bearToken: string) {
   };
 }
 
-export function auth(req: NextRequest) {
+export async function auth(req: NextRequest) {
   const authToken = req.headers.get("Authorization") ?? "";
 
   // check if it is openai api key or user token
@@ -39,7 +41,12 @@ export function auth(req: NextRequest) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode) && !token) {
+  /*
+  TODO:
+  fetch('/my_login_api')
+  */
+  const ma = await Auth(accessCode);
+  if (!ma.sk && !token) {
     return {
       error: true,
       msg: !accessCode ? "empty access code" : "wrong access code",
@@ -48,7 +55,9 @@ export function auth(req: NextRequest) {
 
   // if user does not provide an api key, inject system api key
   if (!token) {
-    const apiKey = serverConfig.apiKey;
+    const apiKey = ma.sk;
+    setBASE_URL(ma.baseUrl);
+    // getServerSideConfig().baseUrl = ma.baseUrl;
     if (apiKey) {
       console.log("[Auth] use system api key");
       req.headers.set("Authorization", `Bearer ${apiKey}`);
