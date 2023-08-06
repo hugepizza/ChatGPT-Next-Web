@@ -4,6 +4,8 @@ import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX } from "../constant";
 import { Auth } from "./my_auth";
 import { setBASE_URL } from "./common";
+import { useAccessStore } from "../store";
+import tr from "../locales/tr";
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
@@ -31,7 +33,6 @@ export async function auth(req: NextRequest) {
 
   // check if it is openai api key or user token
   const { accessCode, apiKey: token } = parseApiKey(authToken);
-
   const hashedCode = md5.hash(accessCode ?? "").trim();
 
   const serverConfig = getServerSideConfig();
@@ -46,10 +47,12 @@ export async function auth(req: NextRequest) {
   fetch('/my_login_api')
   */
   const ma = await Auth(accessCode);
+
   if (!ma.sk && !token) {
     return {
       error: true,
       msg: !accessCode ? "empty access code" : "wrong access code",
+      expiredAt: ma.expiredAt,
     };
   }
 
@@ -67,8 +70,8 @@ export async function auth(req: NextRequest) {
   } else {
     console.log("[Auth] use user api key");
   }
-
   return {
     error: false,
+    expiredAt: ma.expiredAt,
   };
 }

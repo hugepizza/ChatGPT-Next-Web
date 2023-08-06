@@ -2,7 +2,7 @@
 
 require("../polyfill");
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import styles from "./home.module.scss";
 
@@ -115,6 +115,7 @@ function Screen() {
   const isHome = location.pathname === Path.Home;
   const isAuth = location.pathname === Path.Auth;
   const isMobileScreen = useMobileScreen();
+  const [expiredAt, setExpiredAt] = useState("");
 
   useEffect(() => {
     loadAsyncGoogleFont();
@@ -169,7 +170,6 @@ export function useLoadData() {
 export function Home() {
   useSwitchTheme();
   useLoadData();
-
   useEffect(() => {
     console.log("[Config] got config from build time", getClientConfig());
     useAccessStore.getState().fetch();

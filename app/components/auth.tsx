@@ -7,12 +7,31 @@ import { useAccessStore } from "../store";
 import Locale from "../locales";
 
 import BotIcon from "../icons/bot.svg";
+import { getHeaders } from "../client/api";
 
 export function AuthPage() {
   const navigate = useNavigate();
   const access = useAccessStore();
 
-  const goHome = () => navigate(Path.Home);
+  const goHome = () => {
+    console.log("go home");
+
+    fetch("/api/auth", {
+      method: "GET",
+      headers: getHeaders(),
+    })
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((j) => {
+        access.updateExpiredAt(j.expiredAt.toString());
+        navigate(Path.Home); // Move this line here
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
 
   return (
     <div className={styles["auth-page"]}>

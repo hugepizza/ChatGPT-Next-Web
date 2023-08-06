@@ -14,7 +14,7 @@ import DragIcon from "../icons/drag.svg";
 
 import Locale from "../locales";
 
-import { useAppConfig, useChatStore } from "../store";
+import { useAccessStore, useAppConfig, useChatStore } from "../store";
 
 import {
   MAX_SIDEBAR_WIDTH,
@@ -107,7 +107,7 @@ export function SideBar(props: { className?: string }) {
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
   const navigate = useNavigate();
   const config = useAppConfig();
-
+  const access = useAccessStore();
   useHotKey();
 
   return (
@@ -118,10 +118,13 @@ export function SideBar(props: { className?: string }) {
     >
       <div className={styles["sidebar-header"]} data-tauri-drag-region>
         <div className={styles["sidebar-title"]} data-tauri-drag-region>
-          ChatGPT Next
+          AI图文王 桌面版
         </div>
         <div className={styles["sidebar-sub-title"]}>
-          Build your own AI assistant.
+          {access.expiredAt
+            ? "过期时间: " +
+              new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
+            : "Build your own AI assistant."}
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
