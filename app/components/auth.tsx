@@ -9,6 +9,7 @@ import Locale from "../locales";
 import BotIcon from "../icons/bot.svg";
 import { getHeaders } from "../client/api";
 import { useState } from "react";
+import { GET } from "../api/auth/route";
 
 export function AuthPage() {
   const navigate = useNavigate();
@@ -16,8 +17,7 @@ export function AuthPage() {
   const [errmsg, setErrmsg] = useState("");
   const goHome = () => {
     console.log("go home");
-
-    fetch("/api/auth", {
+    fetch("/api/auth?login=true", {
       method: "GET",
       headers: getHeaders(),
     })
@@ -25,10 +25,12 @@ export function AuthPage() {
         return resp.json();
       })
       .then((j) => {
+        console.log("j ", j);
         if (Date.now() / 1000 > j.expiredAt) {
           setErrmsg("订阅已过期");
         } else {
           access.updateExpiredAt(j.expiredAt.toString());
+          access.updateTrail(j.trail);
           navigate(Path.Home); // Move this line here
         }
       })

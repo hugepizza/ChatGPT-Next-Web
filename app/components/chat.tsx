@@ -602,10 +602,10 @@ function _Chat() {
   type RenderMessage = ChatMessage & { preview?: boolean };
 
   const chatStore = useChatStore();
+  const accessStore = useAccessStore();
   const session = chatStore.currentSession();
   const config = useAppConfig();
   const fontSize = config.fontSize;
-
   const [showExport, setShowExport] = useState(false);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -693,6 +693,7 @@ function _Chat() {
       return;
     }
     setIsLoading(true);
+    accessStore.updateTrail(accessStore.trail - 1);
     chatStore.onUserInput(userInput).then(() => setIsLoading(false));
     localStorage.setItem(LAST_INPUT_KEY, userInput);
     setUserInput("");
@@ -861,7 +862,6 @@ function _Chat() {
   const context: RenderMessage[] = useMemo(() => {
     return session.mask.hideContext ? [] : session.mask.context.slice();
   }, [session.mask.context, session.mask.hideContext]);
-  const accessStore = useAccessStore();
 
   if (
     context.length === 0 &&

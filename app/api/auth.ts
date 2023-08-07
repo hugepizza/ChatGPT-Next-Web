@@ -42,11 +42,11 @@ export async function auth(req: NextRequest) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  /*
-  TODO:
-  fetch('/my_login_api')
-  */
-  const ma = await Auth(accessCode);
+  const ma = await Auth(
+    accessCode,
+    req.nextUrl.searchParams.get("login") === "true" || false,
+  );
+  console.log("ma ", ma);
 
   if (!ma.sk && !token) {
     return {
@@ -73,5 +73,6 @@ export async function auth(req: NextRequest) {
   return {
     error: false,
     expiredAt: ma.expiredAt,
+    trail: ma.trail,
   };
 }

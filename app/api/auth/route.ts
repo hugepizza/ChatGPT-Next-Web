@@ -14,7 +14,7 @@ async function handle(req: NextRequest) {
   }
 
   return NextResponse.json(
-    { expiredAt: authResult.expiredAt },
+    { expiredAt: authResult.expiredAt, trail: authResult.trail },
     {
       status: 200,
     },

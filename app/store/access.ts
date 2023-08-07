@@ -18,6 +18,7 @@ export interface AccessControlStore {
   openaiUrl: string;
 
   expiredAt: string;
+  trail: number;
 
   updateToken: (_: string) => void;
   updateUserName: (_: string) => void;
@@ -25,6 +26,7 @@ export interface AccessControlStore {
   updateOpenAiUrl: (_: string) => void;
 
   updateExpiredAt: (_: string) => void;
+  updateTrail: (_: number) => void;
 
   enabledAccessControl: () => boolean;
   isAuthorized: () => boolean;
@@ -51,6 +53,7 @@ export const useAccessStore = create<AccessControlStore>()(
       openaiUrl: DEFAULT_OPENAI_URL,
 
       expiredAt: "",
+      trail: 0,
 
       enabledAccessControl() {
         get().fetch();
@@ -72,6 +75,10 @@ export const useAccessStore = create<AccessControlStore>()(
 
       updateExpiredAt(expiredAt: string) {
         set(() => ({ expiredAt: expiredAt?.trim() }));
+      },
+
+      updateTrail(trail: number) {
+        set(() => ({ trail: trail }));
       },
 
       isAuthorized() {

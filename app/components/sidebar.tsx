@@ -121,10 +121,12 @@ export function SideBar(props: { className?: string }) {
           AI图文王 桌面版
         </div>
         <div className={styles["sidebar-sub-title"]}>
-          {access.expiredAt
-            ? "过期时间: " +
-              new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
-            : "Build your own AI assistant."}
+          {access.trail < 0
+            ? access.expiredAt
+              ? "过期时间: " +
+                new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
+              : "你的智能文案助手."
+            : "剩余体验次数: " + access.trail.toString()}
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
