@@ -122,10 +122,10 @@ export function SideBar(props: { className?: string }) {
         </div>
         <div className={styles["sidebar-sub-title"]}>
           {access.trail < 0
-            ? access.expiredAt
+            ? parseInt(access.expiredAt + "000", 10) < Date.now()
               ? "过期时间: " +
                 new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
-              : "你的智能文案助手."
+              : "已过期，请联系客服开通."
             : "剩余体验次数: " + access.trail.toString()}
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
