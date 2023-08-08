@@ -122,7 +122,7 @@ export function SideBar(props: { className?: string }) {
         </div>
         <div className={styles["sidebar-sub-title"]}>
           {access.trail < 0
-            ? parseInt(access.expiredAt + "000", 10) < Date.now()
+            ? parseInt(access.expiredAt + "000", 10) > Date.now()
               ? "过期时间: " +
                 new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
               : "已过期，请联系客服开通."
