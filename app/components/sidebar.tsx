@@ -118,7 +118,7 @@ export function SideBar(props: { className?: string }) {
     >
       <div className={styles["sidebar-header"]} data-tauri-drag-region>
         <div className={styles["sidebar-title"]} data-tauri-drag-region>
-          AI图文王 桌面版
+          AI图文王 电脑版
         </div>
         <div className={styles["sidebar-sub-title"]}>
           {access.trail < 0

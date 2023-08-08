@@ -6,7 +6,7 @@ import { getClientConfig } from "./config/client";
 import { type Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI图文王 桌面版",
+  title: "AI图文王 电脑版",
   description: "你的智能文案助手.",
   viewport: {
     width: "device-width",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     { media: "(prefers-color-scheme: dark)", color: "#151515" },
   ],
   appleWebApp: {
-    title: "AI图文王 桌面版",
+    title: "AI图文王 电脑版",
     statusBarStyle: "default",
   },
 };
