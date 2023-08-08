@@ -124,7 +124,9 @@ export function SideBar(props: { className?: string }) {
           {access.trail < 0
             ? parseInt(access.expiredAt + "000", 10) > Date.now()
               ? "过期时间: " +
-                new Date(parseInt(access.expiredAt + "000", 10)).toDateString()
+                new Date(
+                  parseInt(access.expiredAt + "000", 10),
+                ).toLocaleString()
               : "已过期，请联系客服开通."
             : "剩余体验次数: " + access.trail.toString()}
         </div>
